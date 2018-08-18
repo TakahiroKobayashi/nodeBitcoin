@@ -19,7 +19,7 @@ public struct SECP256K1 {
 extension SECP256K1 {
     static var context = secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN|SECP256K1_CONTEXT_VERIFY))
     
-    static func signForRecovery(hash: Data, privateKey: Data, useExtraEntropy: Bool = true) -> (serializedSignature:Data?, rawSignature: Data?) {
+    public static func signForRecovery(hash: Data, privateKey: Data, useExtraEntropy: Bool = true) -> (serializedSignature:Data?, rawSignature: Data?) {
         if (hash.count != 32 || privateKey.count != 32) {return (nil, nil)}
         if !SECP256K1.verifyPrivateKey(privateKey: privateKey) {
             return (nil, nil)
@@ -43,7 +43,7 @@ extension SECP256K1 {
         return (nil, nil)
     }
     
-    static func privateToPublic(privateKey: Data, compressed: Bool = false) -> Data? {
+    public static func privateToPublic(privateKey: Data, compressed: Bool = false) -> Data? {
         if (privateKey.count != 32) {return nil}
         guard var publicKey = SECP256K1.privateKeyToPublicKey(privateKey: privateKey) else {return nil}
         guard let serializedKey = serializePublicKey(publicKey: &publicKey, compressed: compressed) else {return nil}
@@ -227,7 +227,7 @@ extension SECP256K1 {
         return recoverableSignature
     }
     
-    static func recoverPublicKey(hash: Data, signature: Data, compressed: Bool = false) -> Data? {
+    public static func recoverPublicKey(hash: Data, signature: Data, compressed: Bool = false) -> Data? {
         guard hash.count == 32, signature.count == 65 else {return nil}
         guard var recoverableSignature = parseSignature(signature: signature) else {return nil}
         guard var publicKey = SECP256K1.recoverPublicKey(hash: hash, recoverableSignature: &recoverableSignature) else {return nil}
@@ -242,7 +242,7 @@ extension SECP256K1 {
         return EthereumAddress(addressData)
     }
     
-    static func verifyPrivateKey(privateKey: Data) -> Bool {
+    public static func verifyPrivateKey(privateKey: Data) -> Bool {
         if (privateKey.count != 32) {return false}
         let result = privateKey.withUnsafeBytes { (privateKeyPointer:UnsafePointer<UInt8>) -> Int32 in
             let res = secp256k1_ec_seckey_verify(context!, privateKeyPointer)

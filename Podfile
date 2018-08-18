@@ -8,6 +8,7 @@ target 'node' do
   pod 'web3swift', '~> 0.8.0'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
 
   # Pods for node
 

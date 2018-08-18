@@ -9,11 +9,16 @@
 import UIKit
 import web3swift
 import BigInt
+import FirebaseAuth
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        Auth.auth().signIn(withEmail: "dev.koba@gmail.com", password: "kobayashi") { (result, error) in
+            print(result?.additionalUserInfo)
+        }
         self.view.backgroundColor = UIColor.blue
         // Do any additional setup after loading the view, typically from a nib.
         let address = EthereumAddress("0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826") // regtest
@@ -33,8 +38,8 @@ class ViewController: UIViewController {
         let abi = "[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"constant\":true,\"inputs\":[],\"name\":\"getGreeting\",\"outputs\":[{\"name\":\"\",\"type\":\"string\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_newGreeting\",\"type\":\"string\"}],\"name\":\"setGreeting\",\"outputs\":[{\"name\":\"success\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]"
         let contract = web3rin?.contract(abi, at: contractAddress, abiVersion: 1)! // utilize precompiled ERC20 ABI for your concenience
         var options = Web3Options.defaultOptions()
-        var gasLimit: BigUInt? = BigUInt(5000000000000) // - default gas limit
-        var gasPrice: BigUInt? = BigUInt(5000000000000) // - default gas price, quite small
+        var gasLimit: BigUInt? = BigUInt(500000000) // - default gas limit
+        var gasPrice: BigUInt? = BigUInt(500000000) // - default gas price, quite small
         options.gasLimit = gasLimit
         options.gasPrice = gasPrice
         options.from = address
@@ -52,6 +57,7 @@ class ViewController: UIViewController {
         
         let coldWalletAddress = EthereumAddress("0x6394b37Cf80A7358b38068f0CA4760ad49983a1B")
         let constractAddress = EthereumAddress("0x45245bc59219eeaaf6cd3f382e078a461ff9de7b")
+        
         
 //        var options = Web3Options.defaultOptions()
         // public var to: EthereumAddress? = nil - to what address transaction is aimed
@@ -76,6 +82,8 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    func showSpinner() {
+        
+    }
 }
 
